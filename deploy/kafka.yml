@@ -6,6 +6,10 @@ services:
     container_name: zookeeper
     ports:
       - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+    volumes:
+      - ./zoo_data:/opt/zookeeper-3.4.13/data
   kafka:
     image: wurstmeister/kafka
     hostname: kafka
@@ -17,6 +21,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     volumes:
       - ./kafka_data:/kafka/kafka-logs-kafka
+      - ./../data:/raw_data
   connect:
     image: confluentinc/cp-kafka-connect:latest
     hostname: connect
@@ -26,6 +31,9 @@ services:
       - kafka
     ports:
       - "8083:8083"
+    volumes:
+      - ./../data:/raw_data
+#      - ./connect-log4j.properties:/etc/kafka/connect-log4j.properties:r
     environment:
       CONNECT_BOOTSTRAP_SERVERS: kafka:9092
       CONNECT_REST_ADVERTISED_HOST_NAME: connect
