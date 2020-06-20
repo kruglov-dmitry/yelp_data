@@ -6,9 +6,9 @@ REPLICATION_FACTOR="replication-factor 1"
 PARTITION_FACTOR="--partitions 10"
 CREATE_KAFKA_TOPIC="${DOCKER_EXEC}kafka-topics.sh --create --bootstrap-server ${KAFKA_CONTAINER_NAME}:9092 ${REPLICATION_FACTOR} ${PARTITION_FACTOR} --topic "
 
-TOPICS=(business review user checkin tip photo)
+TOPICS=(business review user checkin tip)
 
-for i in "${TOPICS[@]}"
+for topic_name in "${TOPICS[@]}"
 do
-	$CREATE_KAFKA_TOPIC $i
+	${CREATE_KAFKA_TOPIC} ${topic_name}
 done
