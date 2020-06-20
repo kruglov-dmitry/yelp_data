@@ -1,6 +1,6 @@
 from pyspark.sql import types as T
 
-BUSINESS_SCHEMA = T.StructType(
+REVIEW_SCHEMA = T.StructType(
     [
         T.StructField("review_id", T.StringType(), True),
         T.StructField("user_id", T.StringType(), True),
