@@ -1,0 +1,46 @@
+version: "2"
+
+services:
+  cassandra1:
+    image: cassandra
+    volumes:
+      - ../conf/cassandra.yaml:/etc/cassandra/cassandra.yaml
+     - ./cassandra1/:/var/lib/cassandra/
+    cap_add:
+      - IPC_LOCK
+    cpuset: 0-1
+    mem_limit: 4g
+    hostname: cassandra1
+    container_name: cassandra1
+    environment:
+      - CASSANDRA_BROADCAST_ADDRESS=cassandra1
+      - CASSANDRA_LISTEN_ADDRESS=cassandra1
+      - CASSANDRA_RPC_ADDRESS=cassandra1
+      - CASSANDRA_SEEDS=cassandra1
+      - CASSANDRA_NUM_TOKENS=256
+      - CASSANDRA_JMX_HOST=cassandra1
+      - CASSANDRA_RACK=rack1
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_AUTO_BOOTSTRAP="false"
+      - CASSANDRA_DATA_DIRECTORY="/var/lib/cassandra/data"
+      - CASSANDRA_SAVED_CACHES_DIRECTORY="/var/lib/cassandra/saved_caches"
+      - CASSANDRA_COMMITLOG_DIRECTORY="/var/lib/cassandra/commitlog"
+      - CASSANDRA_CONCURRENT_COMPACTORS=2
+      - JMX_PORT=7200
+      - CONTAINER_NAME=cassandra1
+      - HOSTNAME=cassandra1
+    # not available under MacOs
+    # network_mode: "host"
+    #
+    # 7000: intra-node communication
+    # 7001: TLS intra-node communication
+    # 7199: JMX
+    # 9042: CQL
+    # 9160: Thrift
+    #
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+      - "7199:7199"
+      - "9042:9042"
+      - "9160:9160"

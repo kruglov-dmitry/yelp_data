@@ -1,0 +1,133 @@
+# DK
+# according to https://wikitech.wikimedia.org/wiki/Cassandra/Tuning
+# for ssd it is fine to set to 120
+# according to https://medium.com/@foundev/how-i-tune-cassandra-compaction-7c16fb0b1d99#.14zsikqiy
+# for ssd it can be fine up to 250
+compaction_throughput_mb_per_sec: 200
+row_cache_save_period: 0
+cross_node_timeout: false
+counter_cache_save_period: 7200
+sstable_preemptive_open_interval_in_mb: 50
+internode_compression: all
+key_cache_save_period: 14400
+inter_dc_tcp_nodelay: false
+trickle_fsync_interval_in_kb: 10240
+dynamic_snitch_update_interval_in_ms: 100
+column_index_size_in_kb: 64
+disk_failure_policy: stop
+thrift_framed_transport_size_in_mb: 15
+authorizer: AllowAllAuthorizer
+read_request_timeout_in_ms: 5000
+dynamic_snitch_reset_interval_in_ms: 600000
+# DK I will disable this option due to
+# ut we manually set memtable_cleanup_threshold to 0.11
+# which is prevent to use advantage of ssd disk - because calculated default will be there is 0.33
+# (https://docs.datastax.com/en/cassandra/2.1/cassandra/configuration/configCassandra_yaml_r.html#reference_ds_qfg_n1r_1k__memtable_cleanup_threshold)
+# memtable_cleanup_threshold: 0.11
+snapshot_before_compaction: false
+request_scheduler: org.apache.cassandra.scheduler.NoScheduler
+max_hints_delivery_threads: 2
+tombstone_failure_threshold: 100000
+incremental_backups: false
+memory_allocator: NativeAllocator
+commitlog_sync: periodic
+permissions_validity_in_ms: 2000
+# DK
+# according to http://stackoverflow.com/questions/29145986/what-configuration-options-are-worth-reviewing-in-cassandra-if-one-is-using-ssds
+# for sdd disk better to set trickle_fsync to true
+trickle_fsync: true
+rpc_keepalive: true
+max_hint_window_in_ms: 10800000
+commitlog_segment_size_in_mb: 32
+counter_write_request_timeout_in_ms: 5000
+commit_failure_policy: stop
+range_request_timeout_in_ms: 10000
+write_request_timeout_in_ms: 20000
+request_timeout_in_ms: 10000
+authenticator: AllowAllAuthenticator
+row_cache_size_in_mb: 0
+memtable_allocation_type: heap_buffers
+dynamic_snitch_badness_threshold: 0.1
+commitlog_sync_period_in_ms: 10000
+auto_snapshot: true
+hinted_handoff_throttle_in_kb: 1024
+# DK
+# according to https://medium.com/@foundev/how-i-tune-cassandra-compaction-7c16fb0b1d99#.14zsikqiy
+# better to decrease it to max 2
+# official guide tend to propose to keep them equal to number of cores (not included hyper-threading)
+# so in this case I will set them equal to number of cores
+
+concurrent_compactors: 2
+# DK
+# I will set those things to defaults
+# according to http://jonathanhui.com/cassandra-performance-tuning-and-monitoring
+# and http://www.tanzirmusabbir.com/2013/06/cassandra-performance-tuning.html
+concurrent_reads: 2
+concurrent_writes: 8
+endpoint_snitch: GossipingPropertyFileSnitch
+rpc_interface_prefer_ipv6: false
+client_encryption_options:
+  keystore: conf/.keystore
+  store_type: JKS
+  algorithm: SunX509
+  truststore_password: cassandra
+  cipher_suites: [TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
+    TLS_DHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA]
+  enabled: false
+  protocol: TLS
+  require_client_auth: false
+  truststore: conf/.truststore
+  keystore_password: cassandra
+partitioner: org.apache.cassandra.dht.Murmur3Partitioner
+listen_interface_prefer_ipv6: false
+ssl_storage_port: 7001
+truncate_request_timeout_in_ms: 60000
+index_summary_resize_interval_in_minutes: 60
+cas_contention_timeout_in_ms: 1000
+tombstone_warn_threshold: 1000
+rpc_server_type: sync
+# DK
+# mapped directory to container
+#
+saved_caches_directory: /var/lib/cassandra/saved_caches
+commitlog_directory: /var/lib/cassandra/commitlog
+data_file_directories: [/var/lib/cassandra/data]
+batch_size_warn_threshold_in_kb: 15
+server_encryption_options:
+  keystore: conf/.keystore
+  protocol: TLS
+  algorithm: SunX509
+  cipher_suites: [TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
+    TLS_DHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA]
+  truststore_password: cassandra
+  require_client_auth: false
+  store_type: JKS
+  truststore: conf/.truststore
+  internode_encryption: none
+  keystore_password: cassandra
+start_native_transport: true
+native_transport_port: 9042
+compaction_large_partition_warning_threshold_mb: 100
+concurrent_counter_writes: 32
+batchlog_replay_throttle_in_kb: 1024
+
+
+seed_provider:
+- class_name: org.apache.cassandra.locator.SimpleSeedProvider
+  parameters:
+  - {seeds: "127.0.0.1"}
+
+cluster_name: Mediation
+
+storage_port: 7000
+
+listen_address: 127.0.0.1
+
+start_rpc: true
+rpc_address:  127.0.0.1
+rpc_port: 9160
+
+hinted_handoff_enabled: 'true'
+
+num_tokens: 256
+auto_bootstrap: false
