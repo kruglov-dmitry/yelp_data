@@ -23,7 +23,7 @@ PRIMARY KEY (user_id)
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
     AND comment = 'Table holds user details.
         user_id - string, 22 character unique user id
-        review_count - integer, the number of reviews they've written
+        review_count - integer, the number of reviews they''ve written
         useful - number of useful votes sent by the user
         funny - number of funny votes sent by the user
         cool - number of cool votes sent by the user
