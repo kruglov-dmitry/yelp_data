@@ -1,4 +1,4 @@
-CREATE KEYSPACE yelp_data WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'}  AND durable_writes = true;
+CREATE KEYSPACE IF NOT EXISTS yelp_data WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'}  AND durable_writes = true;
 
 CREATE TYPE yelp_data.schedule_per_day (
   monday varchar,
@@ -25,8 +25,7 @@ CREATE TABLE yelp_data.business (
     attributes map<varchar, varchar>,
     categories set<varchar>,
     hours FROZEN<schedule_per_day>,
-
-    PRIMARY KEY (name, stars)
+    PRIMARY KEY (business_id)
 ) WITH CLUSTERING ORDER BY (stars DESC)
     AND bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
