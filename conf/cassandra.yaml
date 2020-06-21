@@ -117,7 +117,7 @@ seed_provider:
   parameters:
   - {seeds: "127.0.0.1"}
 
-cluster_name: Mediation
+cluster_name: Yelp_Data_Playground
 
 storage_port: 7000
 
