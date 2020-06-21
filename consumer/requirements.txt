@@ -1,0 +1,4 @@
+setuptools
+pypandoc
+wheel
+pyspark==2.3.0

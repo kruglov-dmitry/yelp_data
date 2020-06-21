@@ -51,8 +51,8 @@ BUSINESS_SCHEMA = T.StructType(
             T.StructField("RestaurantsTableService", T.StringType(), True),
             T.StructField("RestaurantsTakeOut", T.StringType(), True),
             T.StructField("Smoking", T.StringType(), True),
-            T.StructField("WheelchairAccessible", T.StringType(T.StringType()), True),
-            T.StructField("WiFi", T.StringType(), True),
+            T.StructField("WheelchairAccessible", T.StringType(), True),
+           T.StructField("WiFi", T.StringType(), True),
         ]), True),
         T.StructField("categories", T.ArrayType(T.StringType()), True),
         T.StructField("hours", T.StructType([
