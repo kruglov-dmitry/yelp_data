@@ -37,7 +37,7 @@ Business:
 - attributes to map (only programmatic filtering)
 - hours - to udt (only programmatic filtering)
 
-Counters for business, should be updated independent from main records
+Counters for business, reviews, tip - should be updated independent from main records
 - stars to dedicated column family?
 
 Checkin:
@@ -49,6 +49,9 @@ Reviews:
 Tip:
 - introduce artificial uuid based PK
 - date (string) -> date
+
+User:
+- average_stars - to dedicated column family?
 
 
 Reverse indexes:

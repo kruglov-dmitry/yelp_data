@@ -6,7 +6,7 @@ CREATE TABLE yelp_data.checkin (
     PRIMARY KEY (business_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
-    AND comment = 'Table holds business details.
+    AND comment = 'Table holds checkin details.
         business_id - string, 22 character unique string business id
         dates - timestamps for each checkin'
     AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'}

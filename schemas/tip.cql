@@ -9,7 +9,7 @@ CREATE TABLE yelp_data.tip (
     PRIMARY KEY (tip_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
-    AND comment = 'Table holds business details.
+    AND comment = 'Table holds tip details.
         tip_id - string, uuid unique identifier
         user_id - string, 22 character unique user id
         business_id - string, 22 character business id
@@ -31,7 +31,7 @@ CREATE TABLE yelp_data.tip_compliment_count (
     PRIMARY KEY (tip_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
-    AND comment = 'Table holds business details.
+    AND comment = 'Table holds tip compliment count.
         tip_id - string, uuid unique identifier
         compliment_count - integer, how many compliments it has
      '

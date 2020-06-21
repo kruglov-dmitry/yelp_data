@@ -10,7 +10,7 @@ CREATE TABLE yelp_data.review (
     PRIMARY KEY (review_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
-    AND comment = 'Table holds business details.
+    AND comment = 'Table holds review details.
         review_id - string, 22 character unique string review id
         user_id - string, 22 character unique user id
         business_id - string, 22 character business id
@@ -35,7 +35,7 @@ CREATE TABLE yelp_data.review_reactions (
     PRIMARY KEY (review_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
-    AND comment = 'Table holds business details.
+    AND comment = 'Table holds review reactions details.
         review_id - string, 22 character unique string review id
         useful - number of useful votes received
         funny - number of funny votes received

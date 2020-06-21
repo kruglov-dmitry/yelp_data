@@ -57,7 +57,7 @@ CREATE TABLE yelp_data.business_review_count (
     PRIMARY KEY (business_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
-    AND comment = 'Table holds business details.
+    AND comment = 'Table holds count of reviews for business.
         business_id - string, 22 character unique string business id
         review_count - integer, number of reviews'
     AND compaction = {'class': 'org.apache.cassandra.db.compaction.LeveledCompactionStrategy'}
