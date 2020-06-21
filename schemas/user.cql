@@ -17,7 +17,7 @@ CREATE TABLE yelp_data.user_statistics (
     compliment_cool counter,
     compliment_funny counter,
     compliment_writer counter,
-    compliment_photos counter
+    compliment_photos counter,
 PRIMARY KEY (user_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
@@ -56,18 +56,17 @@ CREATE TABLE yelp_data.user (
     yelping_since date,
     friends set<varchar>,
     elite set<smallint>,
-    average_stars float
+    average_stars float,
     PRIMARY KEY (user_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
     AND comment = 'Table holds user details.
         user_id - string, 22 character unique user id
-        name - string, the user's first name
+        name - string, the user''s first name
         yelping_since - when the user joined Yelp
-        friends - array of the user's friends as user_ids
+        friends - array of the user''s friends as user_ids
         elite - the years the user was elite
-        average_stars - float, average rating of all reviews
-    '
+        average_stars - float, average rating of all reviews'
     AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'}
     AND compression = {'sstable_compression': 'org.apache.cassandra.io.compress.DeflateCompressor'}
     AND default_time_to_live = 0

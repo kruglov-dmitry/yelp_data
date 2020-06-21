@@ -2,7 +2,7 @@ CREATE KEYSPACE IF NOT EXISTS yelp_data WITH replication = {'class': 'SimpleStra
 
 CREATE TABLE yelp_data.checkin (
     business_id varchar,
-    dates set<timestamp>
+    dates set<timestamp>,
     PRIMARY KEY (business_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}

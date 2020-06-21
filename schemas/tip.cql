@@ -5,7 +5,7 @@ CREATE TABLE yelp_data.tip (
         user_id varchar,
         business_id varchar,
         tip_date date,
-        tip_text varchar
+        tip_text varchar,
     PRIMARY KEY (tip_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
@@ -27,7 +27,7 @@ CREATE TABLE yelp_data.tip (
 
 CREATE TABLE yelp_data.tip_compliment_count (
         tip_id varchar,
-        compliment_count counter
+        compliment_count counter,
     PRIMARY KEY (tip_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}

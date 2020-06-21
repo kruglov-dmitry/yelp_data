@@ -1,14 +1,14 @@
 CREATE KEYSPACE IF NOT EXISTS yelp_data WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'}  AND durable_writes = true;
-
-CREATE TYPE yelp_data.schedule_per_day (
-  monday varchar,
-  tuesday varchar,
-  wednesday varchar,
-  thursday varchar,
-  friday varchar,
-  saturday varchar,
-  sunday varchar
-);
+ 
+ CREATE TYPE yelp_data.schedule_per_day (
+   monday varchar,
+   tuesday varchar,
+   wednesday varchar,
+   thursday varchar,
+   friday varchar,
+   saturday varchar,
+   sunday varchar
+ );
 
 CREATE TABLE yelp_data.business (
     business_id varchar,
@@ -53,7 +53,7 @@ CREATE TABLE yelp_data.business (
 
 CREATE TABLE yelp_data.business_review_count (
     business_id varchar,
-    review_count bigint
+    review_count counter,
     PRIMARY KEY (business_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}

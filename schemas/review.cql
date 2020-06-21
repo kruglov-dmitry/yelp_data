@@ -6,7 +6,7 @@ CREATE TABLE yelp_data.review (
         business_id varchar,
         stars tinyint,
         review_date date,
-        review_text varchar
+        review_text varchar,
     PRIMARY KEY (review_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
@@ -31,7 +31,7 @@ CREATE TABLE yelp_data.review_reactions (
         review_id varchar,
         useful counter,
         funny counter,
-        cool counter
+        cool counter,
     PRIMARY KEY (review_id)
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys':'ALL', 'rows_per_partition':'NONE'}
