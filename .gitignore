@@ -74,3 +74,4 @@ venv.bak/
 jenv/
 
 .idea/
+*.zip
