@@ -5,7 +5,8 @@ services:
     image: cassandra
     volumes:
       - ../conf/cassandra.yaml:/etc/cassandra/cassandra.yaml
-     - ./cassandra1/:/var/lib/cassandra/
+      - ./cassandra1/:/var/lib/cassandra/
+      - ./schemas/:/schemas/
     cap_add:
       - IPC_LOCK
     cpuset: 0-1
