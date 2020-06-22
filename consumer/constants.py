@@ -1,0 +1,1 @@
+KAFKA_TOPICS = ("business", "review", "user", "checkin", "tip", "errors")

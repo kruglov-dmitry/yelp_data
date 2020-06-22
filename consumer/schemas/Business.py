@@ -1,5 +1,15 @@
 from pyspark.sql import types as T
 
+SCHEDULE_PER_DAY_SCHEMA = T.StructType([
+    T.StructField("monday", T.StringType()),
+    T.StructField("tuesday", T.StringType()),
+    T.StructField("wednesday", T.StringType()),
+    T.StructField("thursday", T.StringType()),
+    T.StructField("friday", T.StringType()),
+    T.StructField("saturday", T.StringType()),
+    T.StructField("sunday", T.StringType())
+])
+
 BUSINESS_SCHEMA = T.StructType(
     [
         T.StructField("business_id", T.StringType(), True),
