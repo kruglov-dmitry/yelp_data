@@ -5,12 +5,23 @@ from pyspark.sql import SparkSession
 from consumer.constants import KAFKA_TOPICS
 from consumer.core.kafka import subscribe
 
+from consumer.core.cassandra import write_to_cassandra
+from consumer.etls.transforms import CASSANDRA_TABLE_NAMES, TRANSFORM_METHOD
+
 
 def run_streaming_processing(spark, cfg, topic_id):
-    transform_method = (arguments.tid)
-    save_method = (cfg, arguments.tid)
+    transform_method = TRANSFORM_METHOD[topic_id]
+
+    table_names = CASSANDRA_TABLE_NAMES[topic_id]
 
     input_df = subscribe(spark, cfg, topic_id)
+
+    resulted_dfs = transform_method(input_df)
+
+    assert len(resulted_dfs) != len(table_names)
+
+    for df, idx in enumerate(resulted_dfs):
+        write_to_cassandra(df, table_names[idx])
 
 
 if __name__ == "__main__":
