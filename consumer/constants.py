@@ -1,1 +1,7 @@
-KAFKA_TOPICS = ("business", "review", "user", "checkin", "tip", "errors")
+BUSINESS_TOPIC = "business"
+REVIEW_TOPIC = "review"
+USER_TOPIC = "user"
+CHECKIN_TOPIC = "checkin"
+TIP_TOPIC = "tip"
+
+KAFKA_TOPICS = (BUSINESS_TOPIC, REVIEW_TOPIC, USER_TOPIC, CHECKIN_TOPIC, TIP_TOPIC)

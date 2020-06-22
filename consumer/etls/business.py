@@ -4,7 +4,7 @@ from itertools import chain
 from consumer.schemas.Business import BUSINESS_SCHEMA, SCHEDULE_PER_DAY_SCHEMA
 
 
-def transform_df(df):
+def business_transform(df):
     #
     #   Get payload from kafka msg
     #

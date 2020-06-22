@@ -3,11 +3,11 @@ import configparser
 
 from pyspark.sql import SparkSession
 from consumer.constants import KAFKA_TOPICS
-from consumer.etls.kafka import subscribe
+from consumer.core.kafka import subscribe
 
 
 def run_streaming_processing(spark, cfg, topic_id):
-    transorm_method = (arguments.tid)
+    transform_method = (arguments.tid)
     save_method = (cfg, arguments.tid)
 
     input_df = subscribe(spark, cfg, topic_id)
