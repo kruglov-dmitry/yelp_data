@@ -9,10 +9,9 @@ from consumer.transform.tip import tip_transform
 TRANSFORM_METHOD = {
     BUSINESS_TOPIC: business_transform,
     CHECKIN_TOPIC: checkin_transform,
-
     REVIEW_TOPIC: review_transform,
-    USER_TOPIC: user_transform,
-    TIP_TOPIC: tip_transform
+    TIP_TOPIC: tip_transform,
+    USER_TOPIC: user_transform
 }
 
 CASSANDRA_TABLE_NAMES = {
@@ -20,6 +19,5 @@ CASSANDRA_TABLE_NAMES = {
     CHECKIN_TOPIC: ["yelp_data.checkin"],
     REVIEW_TOPIC: ["yelp_data.review_reactions", "yelp_data.review"],
     TIP_TOPIC: ["yelp_data.tip_compliment_count", "yelp_data.tip"],
-
     USER_TOPIC: ["yelp_data.user_statistics", "yelp_data.user"],
 }

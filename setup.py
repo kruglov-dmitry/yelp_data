@@ -26,7 +26,7 @@ setup(
     dependency_links=[],
     packages=find_packages(),
     package_data={
-        'yelp_consumer': ['*.sh',
-                          '*.md']
+        'consumer': ['*.sh',
+                     '*.md']
     }
 )

@@ -1,4 +1,3 @@
-from pyspark.sql import types as T
 from pyspark.sql.functions import col, to_date, from_json, expr
 from consumer.schemas.Tip import TIP_SCHEMA
 
