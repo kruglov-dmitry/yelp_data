@@ -6,7 +6,11 @@ NAME = "yelp_consumer"
 VERSION = "1.0.0"
 
 REQUIRES = [
-
+    "setuptools",
+    "pypandoc",
+    "wheel",
+    "configparser",
+    "pyspark==2.4.0"
 ]
 
 DEV_REQUIRES = {
@@ -24,7 +28,7 @@ setup(
     install_requires=REQUIRES,
     extras_require=DEV_REQUIRES,
     dependency_links=[],
-    packages=find_packages(),
+    packages=['consumer'],
     package_data={
         'consumer': ['*.sh',
                      '*.md']

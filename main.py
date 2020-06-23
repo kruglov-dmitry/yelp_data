@@ -18,9 +18,9 @@ def run_streaming_processing(spark, cfg, topic_id):
 
     resulted_dfs = transform_method(input_df)
 
-    assert len(resulted_dfs) != len(table_names)
+    assert len(resulted_dfs) == len(table_names)
 
-    for df, idx in enumerate(resulted_dfs):
+    for idx, df in enumerate(resulted_dfs):
         write_to_cassandra(df, table_names[idx])
 
 
@@ -36,9 +36,12 @@ if __name__ == "__main__":
     config = configparser.ConfigParser()
     config.read(arguments.cfg)
 
+    DEPENDENCIES = 'org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.0,com.datastax.spark:spark-cassandra-connector_2.11:2.4.0'
+
     spark = (
         SparkSession.builder.master(config["spark"]["master"])
             .appName(config["spark"]["app_name"])
+            .config('spark.jars.packages', DEPENDENCIES)
             .config('spark.cassandra.connection.host', config["cassandra"]["host"])
             .config('spark.cassandra.connection.port', config["cassandra"]["port"])
             .config('spark.cassandra.output.consistency.level', config["cassandra"]["consistency"])
@@ -47,6 +50,6 @@ if __name__ == "__main__":
 
     sc = spark.sparkContext
 
-    sc.addPyFile("dependencies.zip")
+    # sc.addPyFile("dependencies.zip")
 
     run_streaming_processing(spark, config, arguments.tid)
