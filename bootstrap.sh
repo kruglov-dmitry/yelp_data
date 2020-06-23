@@ -23,11 +23,21 @@ usage() {
 	echo -e "-d | --data some_file.tar      instead of default location will load data from provided archive"
 }
 
+self_check() {
+    if [[ $? -eq 0 ]]; then
+        echo OK
+    else
+        echo "Error's during last command processing, exiting..."
+        exit 13
+    fi
+}
+
 start_all_services() {
     echo "1st stage - Starting all services..."
     sudo docker-compose -f deploy/kafka.yml up -d
     sudo docker-compose -f deploy/spark.yml up -d
     sudo docker-compose -f deploy/cassandra.yml up -d
+    self_check
 }
 
 setup_all_services() {
@@ -35,6 +45,7 @@ setup_all_services() {
     ./create_kafka_topics.sh
     ./create_cassandra_schema.sh
     ./start_consumer.sh
+    self_check
 }
 
 push_data_to_kafka() {
@@ -93,4 +104,4 @@ echo "Going to push data from ${YELP_DATA_ARCHIVE}"
 
 start_all_services
 setup_all_services
-push_data_to_kafka
+# push_data_to_kafka
