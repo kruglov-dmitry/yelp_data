@@ -38,6 +38,7 @@ start_all_services() {
     sudo docker-compose -f deploy/kafka.yml up -d
     sudo docker-compose -f deploy/spark.yml up -d
     sudo docker-compose -f deploy/cassandra.yml up -d
+    # NOTE: to wait a bit and allow cassandra to start
     sleep 5
     self_check
 }
@@ -46,7 +47,6 @@ setup_all_services() {
     echo "2nd stage - setup all services"
     ./create_kafka_topics.sh
     ./create_cassandra_schema.sh
-    # ./start_consumer.sh
     self_check
 }
 
@@ -58,20 +58,25 @@ push_data_to_kafka() {
         exit 13
     fi
 
-    tar xfvz YELP_DATA_ARCHIVE -C ./data/
+    tar xfvz ${YELP_DATA_ARCHIVE} -C ./data/
+    self_check
+    # NOTE: to wait a bit and allow docker to sync
+    sleep 5
 
     # FIXME
     KAFKA_CONTAINER_NAME=kafka
-    DOCKER_EXEC="sudo docker exec -it ${KAFKA_CONTAINER_NAME} /opt/kafka/bin/"
+    DOCKER_EXEC="sudo docker exec -i ${KAFKA_CONTAINER_NAME} /opt/kafka/bin/"
     RAW_DATA=/raw_data/
 
     echo "3rd stage - about to start publish json into kafka - in total it will take around 10 minutes..."
 
-    ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic business < /raw_data/yelp_academic_dataset_business.json
-    ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic checkin < /raw_data/yelp_academic_dataset_checkin.json
-    ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic review < /raw_data/yelp_academic_dataset_review.json
-    ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic user < /raw_data/yelp_academic_dataset_user.json
-    ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic tip < /raw_data/yelp_academic_dataset_tip.json
+    ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic business < ./data/yelp_academic_dataset_business.json
+    ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic checkin < ./data/yelp_academic_dataset_checkin.json
+    ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic review < ./data/yelp_academic_dataset_review.json
+    ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic user < ./data/yelp_academic_dataset_user.json
+    ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic tip < ./data/yelp_academic_dataset_tip.json
+
+    self_check
 
     echo "3rd stage - Done"
 }

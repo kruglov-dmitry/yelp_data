@@ -75,3 +75,4 @@ jenv/
 
 .idea/
 *.zip
+data/*.json

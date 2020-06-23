@@ -10,8 +10,10 @@
 * **consumer**  - python module to consume data from kafka and publish it into cassandra
 * **data**      - `yelp_dataset.tar` MUST be extracted into this folder (all bootstrap scripts expect it to be there)
 * **deploy**    - docker-compose files for cassandra, kafka and spark
-* **schemas**   - cassandra schema and deploy script
-* **main.py**   - main driver program that orchestrate streaming logic with 
+* **cql_schemas**   - cassandra schema and deploy script
+* **main.py**   - driver program that orchestrate streaming logic 
+* **bootstrap.sh** - deploy and start all services
+* **stop_all.sh** - stop all docker containers and CLEAN container's data and metadata  
 
 # Prerequisites
 * bash shell
