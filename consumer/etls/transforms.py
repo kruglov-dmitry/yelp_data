@@ -19,7 +19,7 @@ CASSANDRA_TABLE_NAMES = {
     BUSINESS_TOPIC: ["yelp_data.business_review_count", "yelp_data.business"],
     CHECKIN_TOPIC: ["yelp_data.checkin"],
     REVIEW_TOPIC: ["yelp_data.review_reactions", "yelp_data.review"],
+    TIP_TOPIC: ["yelp_data.tip_compliment_count", "yelp_data.tip"],
 
-    TIP_TOPIC: ["yelp_data.tip", "yelp_data.tip_compliment_count"],
     USER_TOPIC: ["yelp_data.user_statistics", "yelp_data.user"],
 }
