@@ -16,6 +16,7 @@
 * **stop_all.sh** - stop all docker containers and CLEAN container's data and metadata  
 
 # Prerequisites
+* java 8
 * bash shell
 * python 2.7
 * docker && docker-compose
@@ -138,4 +139,10 @@ sudo docker exec -it cassandra1 cqlsh cassandra1
 How to run pyspark:
 ```bash
 sudo docker exec -it spark-master /spark/bin/pyspark
+```
+
+How to install java 8:
+```bash
+sdk install java 8.0.252-open
+sdk use java 8.0.252-open
 ```
