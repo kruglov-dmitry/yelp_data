@@ -1,3 +1,6 @@
+from threading import Thread
+import time
+
 import argparse
 import configparser as cfgr
 
@@ -8,6 +11,10 @@ from consumer.core.kafka import subscribe
 from consumer.core.cassandra import write_to_cassandra
 from consumer.transform.transforms import CASSANDRA_TABLE_NAMES, TRANSFORM_METHOD
 
+def start_process_daemon(method, args):
+    new_thread = Thread(target=method, args=args)
+    new_thread.daemon = True
+    new_thread.start()
 
 def run_streaming_processing(spark, cfg, topic_id):
     transform_method = TRANSFORM_METHOD[topic_id]
@@ -21,7 +28,13 @@ def run_streaming_processing(spark, cfg, topic_id):
     assert len(resulted_dfs) == len(table_names)
 
     for idx, df in enumerate(resulted_dfs):
-        write_to_cassandra(df, table_names[idx])
+        start_process_daemon(write_to_cassandra, (df, table_names[idx]))
+
+    #
+    #   To handle CTRL-C properly
+    #
+    while True:
+        time.sleep(1)
 
 
 if __name__ == "__main__":
