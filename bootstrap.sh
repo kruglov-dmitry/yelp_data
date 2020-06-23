@@ -33,10 +33,12 @@ self_check() {
 }
 
 start_all_services() {
+    export HOSTNAME
     echo "1st stage - Starting all services..."
     sudo docker-compose -f deploy/kafka.yml up -d
     sudo docker-compose -f deploy/spark.yml up -d
     sudo docker-compose -f deploy/cassandra.yml up -d
+    sleep 5
     self_check
 }
 
@@ -44,7 +46,7 @@ setup_all_services() {
     echo "2nd stage - setup all services"
     ./create_kafka_topics.sh
     ./create_cassandra_schema.sh
-    ./start_consumer.sh
+    # ./start_consumer.sh
     self_check
 }
 
@@ -104,4 +106,4 @@ echo "Going to push data from ${YELP_DATA_ARCHIVE}"
 
 start_all_services
 setup_all_services
-# push_data_to_kafka
+push_data_to_kafka

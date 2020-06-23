@@ -8,7 +8,7 @@ def subscribe(spark, cfg, topic_name):
 
     return spark.readStream \
         .format("kafka") \
-        .option("kafka.bootstrap.servers", cfg["kafka"]["broker"]) \
+        .option("kafka.bootstrap.servers", cfg.get("kafka", "broker")) \
         .option("subscribe", topic_name) \
         .option("maxOffsetsPerTrigger", 5) \
         .option("startingOffsets", "earliest") \

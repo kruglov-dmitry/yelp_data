@@ -1,12 +1,12 @@
 import argparse
-import configparser
+import configparser as cfgr
 
 from pyspark.sql import SparkSession
 from consumer.constants import KAFKA_TOPICS
 from consumer.core.kafka import subscribe
 
 from consumer.core.cassandra import write_to_cassandra
-from consumer.etls.transforms import CASSANDRA_TABLE_NAMES, TRANSFORM_METHOD
+from consumer.transform.transforms import CASSANDRA_TABLE_NAMES, TRANSFORM_METHOD
 
 
 def run_streaming_processing(spark, cfg, topic_id):
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     parser.add_argument('--tid', choices=KAFKA_TOPICS, action='store', required=True)
     arguments = parser.parse_args()
 
-    config = configparser.ConfigParser()
+    config = cfgr.ConfigParser(interpolation=cfgr.ExtendedInterpolation())
     config.read(arguments.cfg)
 
     DEPENDENCIES = 'org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.0,com.datastax.spark:spark-cassandra-connector_2.11:2.4.0'
@@ -50,6 +50,8 @@ if __name__ == "__main__":
 
     sc = spark.sparkContext
 
+    #
     # sc.addPyFile("dependencies.zip")
+    #
 
     run_streaming_processing(spark, config, arguments.tid)

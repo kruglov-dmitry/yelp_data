@@ -1,9 +1,8 @@
 # TODO
-- setup - schema in cassandra
-- Data Quality Assurance - aka e2e tests?
-- ETL(?) logic autotests? - schema validation for example
 - check bootstrap script
 - check config ips
+- Data Quality Assurance - aka e2e tests? - simple based on cassandra connector
+- desicion log
 
 
 # Repository layout
@@ -18,6 +17,7 @@
 * bash shell
 * python 2.7
 * docker && docker-compose
+* HOSTNAME environment variable are set within shell
 
 # How to start
 1. copy `yelp_dataset.tar` to ./data folder
@@ -124,4 +124,16 @@ it usually helps to clean data folders from services:
 rm -rf ./deploy/cassandra1/
 rm -rf ./deploy/kafka_data/
 rm -rf ./deploy/zoo_data/
+```
+in case of network issue may worth to check 1.cfg
+additionally in `deploy/kafka.yml` - modify KAFKA_ADVERTISED_HOST_NAME
+
+### Various
+How to run cqlsh:
+```bash
+sudo docker exec -it cassandra1 cqlsh cassandra1
+```
+How to run pyspark:
+```bash
+sudo docker exec -it spark-master /spark/bin/pyspark
 ```
