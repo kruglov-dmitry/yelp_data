@@ -1,7 +1,7 @@
 from array import array
 from pyspark.sql import types as T
 from pyspark.sql.functions import col, to_date, from_json, split, udf
-from consumer.schemas.Tip import TIP_SCHEMA
+from consumer.schemas.User import USER_SCHEMA
 
 
 def user_transform(df):
@@ -10,7 +10,7 @@ def user_transform(df):
     #
 
     raw_df = df.select(
-        from_json(col("value").cast("string"), TIP_SCHEMA).alias("parsed_value")
+        from_json(col("value").cast("string"), USER_SCHEMA).alias("parsed_value")
     ).select("parsed_value.*")
 
     user_df = raw_df.withColumn(
