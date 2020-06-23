@@ -15,9 +15,9 @@ TRANSFORM_METHOD = {
 }
 
 CASSANDRA_TABLE_NAMES = {
-    BUSINESS_TOPIC: ["yelp_data.business_review_count", "yelp_data.business"],
-    CHECKIN_TOPIC: ["yelp_data.checkin"],
-    REVIEW_TOPIC: ["yelp_data.review_reactions", "yelp_data.review"],
-    TIP_TOPIC: ["yelp_data.tip_compliment_count", "yelp_data.tip"],
-    USER_TOPIC: ["yelp_data.user_statistics", "yelp_data.user"],
+    BUSINESS_TOPIC: ["business_review_count", "business"],
+    CHECKIN_TOPIC: ["checkin"],
+    REVIEW_TOPIC: ["review_reactions", "review"],
+    TIP_TOPIC: ["tip_compliment_count", "tip"],
+    USER_TOPIC: ["user_statistics", "user"],
 }

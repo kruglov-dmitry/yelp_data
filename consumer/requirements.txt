@@ -1,5 +1,0 @@
-setuptools
-pypandoc
-wheel
-pyspark==2.4.0
-configparser
