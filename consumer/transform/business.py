@@ -30,6 +30,8 @@ def business_transform(df):
     #
     # remove nulls from maps
     #
+    #   NOTE: https://adatis.co.uk/databricks-udf-performance-comparisons/
+    #
     def filter_nulls(some_dict):
         if some_dict:
             return {k: some_dict[k] for k in some_dict if some_dict[k]}
