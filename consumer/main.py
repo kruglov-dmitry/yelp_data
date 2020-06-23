@@ -1,26 +1,52 @@
-import sys
+import argparse
+import configparser
 
-# from pyspark import SparkContext
 from pyspark.sql import SparkSession
-from pyspark.streaming import StreamingContext
-from pyspark.streaming.kafka import KafkaUtils
+from consumer.constants import KAFKA_TOPICS
+from consumer.core.kafka import subscribe
 
-import pyspark.sql.functions as f
+from consumer.core.cassandra import write_to_cassandra
+from consumer.etls.transforms import CASSANDRA_TABLE_NAMES, TRANSFORM_METHOD
 
-from schemas.Business import BUSINESS_SCHEMA
 
-def some_method(x):
-	return f.from_json(x[1], BUSINESS_SCHEMA)	
+def run_streaming_processing(spark, cfg, topic_id):
+    transform_method = TRANSFORM_METHOD[topic_id]
+
+    table_names = CASSANDRA_TABLE_NAMES[topic_id]
+
+    input_df = subscribe(spark, cfg, topic_id)
+
+    resulted_dfs = transform_method(input_df)
+
+    assert len(resulted_dfs) != len(table_names)
+
+    for df, idx in enumerate(resulted_dfs):
+        write_to_cassandra(df, table_names[idx])
+
 
 if __name__ == "__main__":
-    spark = SparkSession.builder.master("local").getOrCreate()
+    parser = argparse.ArgumentParser(description="Streaming job startup script"
+                                                 "--cfg file containing core settings"
+                                                 "--tid name of kafka topic"
+                                     )
+    parser.add_argument('--cfg', action='store', required=True)
+    parser.add_argument('--tid', choices=KAFKA_TOPICS, action='store', required=True)
+    arguments = parser.parse_args()
+
+    config = configparser.ConfigParser()
+    config.read(arguments.cfg)
+
+    spark = (
+        SparkSession.builder.master(config["spark"]["master"])
+            .appName(config["spark"]["app_name"])
+            .config('spark.cassandra.connection.host', config["cassandra"]["host"])
+            .config('spark.cassandra.connection.port', config["cassandra"]["port"])
+            .config('spark.cassandra.output.consistency.level', config["cassandra"]["consistency"])
+            .getOrCreate()
+    )
+
     sc = spark.sparkContext
+
     sc.addPyFile("dependencies.zip")
 
-    ssc = StreamingContext(sc, 2)
-    kvs = KafkaUtils.createDirectStream(ssc, ["business"], {"metadata.broker.list": "192.168.0.9:9092", "auto.offset.reset": "smallest"})
-    b = kvs.map(some_method)
-    
-    b.pprint(5)
-    ssc.start()
-    ssc.awaitTermination()
+    run_streaming_processing(spark, config, arguments.tid)

@@ -1,4 +1,5 @@
 setuptools
 pypandoc
 wheel
-pyspark==2.3.0
+pyspark==2.4.0
+configparser

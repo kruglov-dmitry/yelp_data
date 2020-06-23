@@ -52,11 +52,15 @@ push_data_to_kafka() {
     DOCKER_EXEC="sudo docker exec -it ${KAFKA_CONTAINER_NAME} /opt/kafka/bin/"
     RAW_DATA=/raw_data/
 
+    echo "3rd stage - about to start publish json into kafka - in total it will take around 10 minutes..."
+
     ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic business < /raw_data/yelp_academic_dataset_business.json
     ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic checkin < /raw_data/yelp_academic_dataset_checkin.json
     ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic review < /raw_data/yelp_academic_dataset_review.json
     ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic user < /raw_data/yelp_academic_dataset_user.json
     ${DOCKER_EXEC}/kafka-console-producer.sh --broker-list kafka:9092 --topic tip < /raw_data/yelp_academic_dataset_tip.json
+
+    echo "3rd stage - Done"
 }
 
 YELP_DATA_ARCHIVE=./data/yelp_dataset.tar
