@@ -11,10 +11,12 @@ from consumer.core.kafka import subscribe
 from consumer.core.cassandra import write_to_cassandra
 from consumer.transform.transforms import CASSANDRA_TABLE_NAMES, TRANSFORM_METHOD
 
+
 def start_process_daemon(method, args):
     new_thread = Thread(target=method, args=args)
     new_thread.daemon = True
     new_thread.start()
+
 
 def run_streaming_processing(spark, cfg, topic_id):
     transform_method = TRANSFORM_METHOD[topic_id]

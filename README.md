@@ -13,7 +13,8 @@ for some reason it stop publish messages into kafka topic after approximately 10
 - cassandra replication factor is set to 1
 - number of nodes in setup decreased to have options to be able to run all setup within workstation
 - events with mismatched schema are not published to corresponding errors topics
-- testing are very limited just to demonstrate how it can be done 
+- testing are very limited just to demonstrate how it can be done
+- for approach result validation and data explorotary analysis check section "How to get number of businesses per category from cassandra table" 
 
 # Repository layout
 * **conf**      - contains external config files for docker containers
@@ -55,7 +56,7 @@ Alternatively you may specify location of `yelp_dataset.tar`:
 ./bootstrap.sh -d /path/to/data/yelp_dataset.tar
 ```
 
-## How to run streaming job
+## How to run single streaming job
 1. create virtualenv and install dependencies:
 ```bash
 virtualenv -p /usr/bin/python2.7 venv && source ./venv/bin/activate
@@ -86,6 +87,28 @@ pip install -r test-requirements.txt
 3. execute tests 
 ```bash
 tox
+```
+
+# How to get number of businesses per category from cassandra table
+In case you want to run it with this module available, assuming you already install all requirements:
+```bash
+cd consumer && ./make_dist.sh
+sudo docker exec -it spark-master /spark/bin/pyspark \
+--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.0,com.datastax.spark:spark-cassandra-connector_2.11:2.4.0 \
+--conf spark.cassandra.connection.host=192.168.0.9 \
+--conf spark.cassandra.connection.port=9042 \
+--conf spark.cassandra.output.consistency.level=ONE \
+--py-files /consumer/dependencies.zip
+from pyspark.sql.functions import explode, col, countDistinct
+df = spark.read\
+.format("org.apache.spark.sql.cassandra")\
+.options(table="business", keyspace="yelp_data")\
+.load()
+df.printSchema()
+df.count()
+df = df.select(col("business_id"), explode("categories").alias("category"))
+df = df.groupBy("category").agg(countDistinct("business_id"))
+df.show()
 ```
 
 ## Data schema modeling:

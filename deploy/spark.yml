@@ -13,7 +13,7 @@ services:
     volumes:
     - ./../conf/:/conf/
     - ./../data:/raw_data
-    - ./:/app
+    - ./../consumer/:/consumer
     mem_limit: 1g
   spark-worker-1:
     image: bde2020/spark-worker:2.4.0-hadoop2.7
