@@ -55,6 +55,8 @@ Alternatively you may specify location of `yelp_dataset.tar`:
 ```bash
 ./bootstrap.sh -d /path/to/data/yelp_dataset.tar
 ```
+NOTE: sometimes cassandra take time to start properly, in this case it necessary to wait for several minutes
+and just re-start ./bootstrap.sh
 
 ## How to run single streaming job
 1. create virtualenv and install dependencies:
