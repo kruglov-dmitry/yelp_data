@@ -25,6 +25,7 @@ for some reason it stop publish messages into kafka topic after approximately 10
 * **main.py**   - driver program that orchestrate streaming logic 
 * **bootstrap.sh** - deploy and start all services
 * **stop_all.sh** - stop all docker containers and CLEAN container's data and metadata  
+* **start_consumers.sh** - start all streaming jobs as background processes  
 
 # Prerequisites
 * java 8 (see at the bottom how to use `sdk` tool to add additional java version)
@@ -75,6 +76,11 @@ pip install -r requirements.txt
 3. Assuming data in corresponding kafka topics, list of supported topics: [business, review, user, checkin, tip] 
 ```bash
 python main.py --cfg consumer/1.cfg --tid business
+```
+
+## How to run all streaming jobs
+```bash
+./start_consumers.sh
 ```
 
 ## How to run tests for streaming job
