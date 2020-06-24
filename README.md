@@ -1,9 +1,19 @@
-# TODO
-- check bootstrap script
-- check config ips
-- Data Quality Assurance - aka e2e tests? - simple based on cassandra connector
-- desicion log
+# Solution overview:
+Data from json files are loaded by kafka console-producers into appropriate kafka topics.
+Python kafka consumers, based on structured streaming read those data, 
+shape it according to cassandra schema (counter, udt, parsing and typecasting)
+and write it in appropriate tables.
 
+# Decision log
+- Initial attempt to use confluent's kafka connect - namely - failed,
+for some reason it stop publish messages into kafka topic after approximately 10k msg
+- additionally kafka connect wrap each event into nested structure 
+- console-producers was able to publish all messages in less than 10 minutes
+- kafka topics replication & partitions set to fixed values
+- cassandra replication factor is set to 1
+- number of nodes in setup decreased to have options to be able to run all setup within workstation
+- events with mismatched schema are not published to corresponding errors topics
+- testing are very limited just to demonstrate how it can be done 
 
 # Repository layout
 * **conf**      - contains external config files for docker containers
@@ -29,7 +39,12 @@ cp yelp_dataset.tar ./data
 ``` 
 2. create virtual environment and install package with all dependencies:
 ```bash
-
+```
+2.5 update value of `KAFKA_ADVERTISED_HOST_NAME` in deploy/kafka.yml to be ip address 
+(not loopback, not 127.0.0.1). It will work as it is in Linux, but not at Mac.
+or alternatively you may explicitly export HOSTNAME:
+```bash
+export HOSTNAME
 ```
 3. start all services, upload data in Kafka and spawn spark streaming jobs to write data into Cassandra
 ```bash
@@ -43,7 +58,7 @@ Alternatively you may specify location of `yelp_dataset.tar`:
 ## How to run streaming job
 1. create virtualenv and install dependencies:
 ```bash
-virtualenv venv && source ./venv/bin/activate
+virtualenv -p /usr/bin/python2.7 venv && source ./venv/bin/activate
 ```
 2. install requirements:
 ```bash
@@ -72,15 +87,6 @@ pip install -r test-requirements.txt
 ```bash
 tox
 ```
-
-
-# Simplification
-- kafka topics replication & partitions set to fixed values
-- cassandra replication factor is set to 1
-- number of nodes in setup decreased to have options to be able to run all setup within workstation
-- events with mismatched schema are not published to corresponding errors topics
-TODO:
-- testing are very limited just to show example how it can be done
 
 ## Data schema modeling:
 General consideration - Cassandra schema usually defined based on requirements of how user will query data.
@@ -136,9 +142,14 @@ How to run cqlsh:
 ```bash
 sudo docker exec -it cassandra1 cqlsh cassandra1
 ```
+
 How to run pyspark:
 ```bash
-sudo docker exec -it spark-master /spark/bin/pyspark
+sudo docker exec -it spark-master /spark/bin/pyspark \
+--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.0,com.datastax.spark:spark-cassandra-connector_2.11:2.4.0 \
+--conf spark.cassandra.connection.host=192.168.0.9 \
+--conf spark.cassandra.connection.port=9042 \
+--conf spark.cassandra.output.consistency.level=ONE
 ```
 
 How to install java 8:
@@ -146,3 +157,16 @@ How to install java 8:
 sdk install java 8.0.252-open
 sdk use java 8.0.252-open
 ```
+
+time for pushing biggest file into kafka:
+```bash
+time kafka-console-producer.sh --broker-list kafka:9092 --topic review < /raw_data/yelp_academic_dataset_review.json 
+real	5m40.304s
+user	2m2.007s
+sys	1m7.300s
+```
+
+#### some usefull commands
+export PYSPARK_PYTHON=python3
+export PYTHONPATH=$PYTHONPATH:/consumer/
+--py-files dependencies.zip
