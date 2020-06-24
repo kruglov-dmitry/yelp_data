@@ -26,7 +26,7 @@ for some reason it stop publish messages into kafka topic after approximately 10
 * **stop_all.sh** - stop all docker containers and CLEAN container's data and metadata  
 
 # Prerequisites
-* java 8
+* java 8 (see at the bottom how to use `sdk` tool to add additional java version)
 * bash shell
 * python 2.7
 * docker && docker-compose
@@ -154,8 +154,10 @@ sudo docker exec -it spark-master /spark/bin/pyspark \
 
 How to install java 8:
 ```bash
-sdk install java 8.0.252-open
-sdk use java 8.0.252-open
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+sdk install java 8.0.252-amzn
+sdk use java 8.0.252-amzn
 ```
 
 time for pushing biggest file into kafka:
