@@ -1,12 +1,12 @@
 # Solution overview:
-Data from json files are loaded by kafka console-producers into appropriate kafka topics.
+Data from [Yelp dataset](https://www.yelp.com/dataset/) - json files - are loaded by kafka console-producers into appropriate kafka topics.
 Python kafka consumers, based on spark structured streaming read those data, 
 shape it according to cassandra schema (using advanced built=in types: counter, set, map,
  as well as UDT - user defined types, parsing and typecasting)
 and write it in appropriate tables.
 
 # Decision log
-- Initial attempt to use confluent's kafka connect - namely - failed,
+- Initial attempt to use confluent's kafka connect - miserably failed,
 for some reason it stop publish messages into kafka topic after approximately 10k msg
 - additionally kafka connect wrap each event into nested structure 
 - console-producers was able to publish all messages in less than 10 minutes
@@ -15,7 +15,7 @@ for some reason it stop publish messages into kafka topic after approximately 10
 - number of nodes in setup decreased to have options to be able to run all setup within workstation
 - events with mismatched schema are not published to corresponding errors topics
 - testing are very limited just to demonstrate how it can be done
-- for approach result validation and data exploratory analysis check section "How to get number of businesses per category from cassandra table" 
+- for approach result validation and data exploratory analysis check section [How to get number of businesses per category from cassandra table](how-to-run-tests-for-streaming-job)
 
 # Repository layout
 * **conf**      - contains external config files for docker containers
