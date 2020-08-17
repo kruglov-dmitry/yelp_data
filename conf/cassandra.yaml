@@ -1,4 +1,6 @@
-# DK
+# DK 2020 NOTE
+# based on cfg for cassandra 2.1 for ssd deployed in dockers
+#
 # according to https://wikitech.wikimedia.org/wiki/Cassandra/Tuning
 # for ssd it is fine to set to 120
 # according to https://medium.com/@foundev/how-i-tune-cassandra-compaction-7c16fb0b1d99#.14zsikqiy
@@ -19,8 +21,8 @@ thrift_framed_transport_size_in_mb: 15
 authorizer: AllowAllAuthorizer
 read_request_timeout_in_ms: 5000
 dynamic_snitch_reset_interval_in_ms: 600000
-# DK I will disable this option due to
-# ut we manually set memtable_cleanup_threshold to 0.11
+# DK I will disable this option due to fact
+# that we manually set memtable_cleanup_threshold to 0.11
 # which is prevent to use advantage of ssd disk - because calculated default will be there is 0.33
 # (https://docs.datastax.com/en/cassandra/2.1/cassandra/configuration/configCassandra_yaml_r.html#reference_ds_qfg_n1r_1k__memtable_cleanup_threshold)
 # memtable_cleanup_threshold: 0.11

@@ -1,7 +1,8 @@
 # Solution overview:
 Data from json files are loaded by kafka console-producers into appropriate kafka topics.
-Python kafka consumers, based on structured streaming read those data, 
-shape it according to cassandra schema (counter, udt, parsing and typecasting)
+Python kafka consumers, based on spark structured streaming read those data, 
+shape it according to cassandra schema (using advanced built=in types: counter, set, map,
+ as well as UDT - user defined types, parsing and typecasting)
 and write it in appropriate tables.
 
 # Decision log
@@ -14,7 +15,7 @@ for some reason it stop publish messages into kafka topic after approximately 10
 - number of nodes in setup decreased to have options to be able to run all setup within workstation
 - events with mismatched schema are not published to corresponding errors topics
 - testing are very limited just to demonstrate how it can be done
-- for approach result validation and data explorotary analysis check section "How to get number of businesses per category from cassandra table" 
+- for approach result validation and data exploratory analysis check section "How to get number of businesses per category from cassandra table" 
 
 # Repository layout
 * **conf**      - contains external config files for docker containers
@@ -107,6 +108,8 @@ sudo docker exec -it spark-master /spark/bin/pyspark \
 --conf spark.cassandra.connection.port=9042 \
 --conf spark.cassandra.output.consistency.level=ONE \
 --py-files /consumer/dependencies.zip
+```
+```python
 from pyspark.sql.functions import explode, col, countDistinct
 df = spark.read\
 .format("org.apache.spark.sql.cassandra")\
@@ -129,10 +132,10 @@ As part of exercise tables in form of <entity_name> - is just snapshot of inform
 
 Just to illustrate how desired tables can be derived I've added as example schema `yelp_data.business_by_location`
 (without populating it though) with reversed index. 
-It is designed to answer questions like: Show me businesseses by locations, with particular category and rating. 
+It is designed to answer questions like: Show me businesses by locations, with particular category and rating. 
 and created dedicated table with appropriate indexes - i.e. PK will be geohash(lat, long): String, category, rating
 NOTE: As a result data will be redundant (for every entry in business) we will multiplication factor for this table only
-equatl to number of categories entries in original row.  
+equal to number of categories entries in original row.  
 
 ### Data adjustments
 
@@ -150,13 +153,7 @@ equatl to number of categories entries in original row.
 * date (string) -> date
 
 In real life stars computed to business, reviews and users will be resided in dedicated column family
-or periodically re-computed in-mem cache that will be synced with cassandra table.
-
-# Assumption
-- demonstrate ops skills
-- demonstrate familiarity with proposed tech stack
-- demonstrate data modeling skills
-- demonstrate spark specific data manipulation skills
+or periodically re-computed in in-mem cache that will be synced with cassandra table.
 
 # Troubleshooting
 it usually helps to clean data folders from services:
@@ -200,6 +197,8 @@ sys	1m7.300s
 ```
 
 #### some usefull commands
+```bash
 export PYSPARK_PYTHON=python3
 export PYTHONPATH=$PYTHONPATH:/consumer/
---py-files dependencies.zip
+pyspark --py-files dependencies.zip
+```

@@ -51,7 +51,8 @@ if __name__ == "__main__":
     config = cfgr.ConfigParser(interpolation=cfgr.ExtendedInterpolation())
     config.read(arguments.cfg)
 
-    DEPENDENCIES = 'org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.0,com.datastax.spark:spark-cassandra-connector_2.11:2.4.0'
+    DEPENDENCIES = 'org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.0,' \
+                   'com.datastax.spark:spark-cassandra-connector_2.11:2.4.0 '
 
     spark = (
         SparkSession.builder.master(config["spark"]["master"])
