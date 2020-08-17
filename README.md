@@ -42,6 +42,8 @@ cp yelp_dataset.tar ./data
 ``` 
 2. create virtual environment and install package with all dependencies:
 ```bash
+virtualenv -p /usr/bin/python2.7 venv && source ./venv/bin/activate
+python setup.py install
 ```
 2.5 update value of `KAFKA_ADVERTISED_HOST_NAME` in deploy/kafka.yml to be ip address 
 (not loopback, not 127.0.0.1). It will work as it is in Linux, but not at Mac.
@@ -57,7 +59,7 @@ Alternatively you may specify location of `yelp_dataset.tar`:
 ```bash
 ./bootstrap.sh -d /path/to/data/yelp_dataset.tar
 ```
-NOTE: sometimes cassandra take time to start properly, in this case it necessary to wait for several minutes
+NOTE: sometimes cassandra take more time to start properly, in this case it necessary to wait for several minutes
 and just re-start ./bootstrap.sh
 
 ## How to run single streaming job
