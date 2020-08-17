@@ -76,3 +76,6 @@ jenv/
 .idea/
 *.zip
 data/*.json
+deploy/cassandra1/
+deploy/kafka_data/
+deploy/zoo_data/
