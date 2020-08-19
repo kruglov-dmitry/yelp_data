@@ -1,8 +1,8 @@
 # Solution overview:
 Data from [Yelp dataset](https://www.yelp.com/dataset/) - json files - are loaded by kafka console-producers into appropriate kafka topics.
 Python kafka consumers, based on spark structured streaming read those data, 
-shape it according to cassandra schema (using advanced built=in types: counter, set, map,
- as well as UDT - user defined types, parsing and typecasting)
+shape it according to cassandra schema (using advanced built-in types: [counter](https://github.com/kruglov-dmitry/yelp_data/blob/master/cql_schemas/user.cql#L10), [set](https://github.com/kruglov-dmitry/yelp_data/blob/master/consumer/transform/business.py#L16), [map](https://github.com/kruglov-dmitry/yelp_data/blob/master/consumer/transform/business.py#L22),
+ as well as [UDT](https://github.com/kruglov-dmitry/yelp_data/blob/master/consumer/schemas/Business.py#L3) - user defined types, parsing and [typecasting](https://github.com/kruglov-dmitry/yelp_data/blob/master/consumer/transform/user.py#L38))
 and write it in appropriate tables.
 
 # Decision log
