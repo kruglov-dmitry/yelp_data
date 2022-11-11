@@ -9,7 +9,7 @@ REQUIRES = [
     "pypandoc",
     "wheel",
     "configparser",
-    "pyspark==2.4.0"
+    "pyspark==3.2.2"
 ]
 
 DEV_REQUIRES = {
